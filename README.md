@@ -20,10 +20,10 @@
 ---------------------------------
 > ####  测试程序
 > - 文件写入和读取正常，且结果相同
-> - dd if=/dev/zero of=testfile bs=1M count=200
+> - dd if=/dev/zero of=testfile bs=1M count=200  oflag=direct(绕过buff cache)
 >    - 记录了200+0 的读入
 >    - 记录了200+0 的写出
->     - 209715200 bytes (210 MB, 200 MiB) copied, 17.7032 s, 11.8 MB/s
+>    - 209715200 bytes (210 MB, 200 MiB) copied, 17.7032 s, 11.8 MB/s
 > - rm testfile  成功删除
 > - 创建目录，删除目录成功
 > - 多次删除并重新创建大文件成功
