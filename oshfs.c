@@ -683,7 +683,30 @@ int oper_rm(const char *path, int flag)
     return res;
 }
 
+int oper_truncate(const char *path, off_t size) {
+    /*struct oshfs_inode *node;
+    if(oper_open(path,node)!=0){
+        return -ENOENT;
+    }
+    printf("23333333333the size is %d\n",node->fsize);
+    if(node->fsize == size)
+        return 0;
+    if(node->fsize > size){
+        int oldnum = node->fsize/MAX_BITMAP_BLOCK_NUM + 1;
+        node->fsize = size;
+        int newnum = size/MAX_BITMAP_BLOCK_NUM + 1;
+        for(int i = newnum ;i<oldnum;i++){
+            oper_set_blk(i,0);
+            munmap(mem[i],BLOCK_BYTES);
+        }
+    }
+    else{
 
+    }*/
+    (void) path;
+    (void) size;
+    return 0;
+}
 static int oshfs_getattr(const char *path, struct stat *stbuf)
 {
     struct oshfs_inode inode;
@@ -1092,6 +1115,10 @@ void *oshfs_init (struct fuse_conn_info *conn)
     return (long*)max_filesystem_in_block;
 }
 
+
+static int oshfs_truncate(const char *path, off_t size) {
+    return oper_truncate(path, size);
+}
 static struct fuse_operations oshfs_oper = {
         .getattr	= oshfs_getattr,
         .readdir	= oshfs_readdir,
@@ -1103,6 +1130,7 @@ static struct fuse_operations oshfs_oper = {
         .unlink		= oshfs_unlink,
         .open		= oshfs_open,
         .init		= oshfs_init,
+        .truncate   = oshfs_truncate,
 };
 
 int main(int argc, char *argv[])
